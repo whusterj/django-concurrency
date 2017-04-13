@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-from optparse import make_option
-
 from django.core.exceptions import ImproperlyConfigured
 from django.core.management.base import BaseCommand
 from django.db import connections
@@ -15,17 +13,17 @@ class Command(BaseCommand):
     requires_model_validation = False
     # requires_system_checks = False
 
-    option_list = BaseCommand.option_list + (
-        make_option('-d', '--database',
-                    action='store',
-                    dest='database',
-                    default=None,
-                    help='limit to this database'),
-        make_option('-t', '--trigger',
-                    action='store',
-                    dest='trigger',
-                    default=None,
-                    help='limit to this trigger name'))
+    def add_arguments(self, parser):
+        parser.add_argument('-d', '--database',
+                            action='store',
+                            dest='database',
+                            default=None,
+                            help='limit to this database'),
+        parser.add_argument('-t', '--trigger',
+                            action='store',
+                            dest='trigger',
+                            default=None,
+                            help='limit to this trigger name')
 
     def _list(self, databases):
         for alias, triggers in get_triggers(databases).items():
